@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json": "untitled:Untitled-1",
+        "https://json.schemastore.org/github-workflow.json": "file:///c%3A/Users/User/Desktop/TUGAS-ALTA/Group-Project-2/.github/workflows/deploy.yml"
+    }
+}
