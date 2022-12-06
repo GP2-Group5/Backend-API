@@ -8,6 +8,7 @@ import (
 	"github.com/GP2-Group5/Backend/utils/database/mysql"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -15,6 +16,8 @@ func main() {
 	db := mysql.InitDB(cfg)
 
 	e := echo.New()
+	e.Pre(middleware.RemoveTrailingSlash())
+	e.Use(middleware.CORS())
 
 	factory.InitFactory(e, db)
 
