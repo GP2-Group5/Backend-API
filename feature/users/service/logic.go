@@ -22,6 +22,8 @@ func (s *userService) Create(input users.UserCore) (err error) {
 		return errors.New("semua field harus diisi")
 	}
 
+	input.Status = "Active"
+
 	input.Password, err = helper.HashPassword(input.Password)
 	if err != nil {
 		return errors.New("failed to hash")
