@@ -42,6 +42,7 @@ func initConfig() *AppConfig {
 	// }
 
 	// SECRET = os.Getenv("SECRET")
+
 	cnv, err := strconv.Atoi(os.Getenv("SERVER_PORT"))
 	if err != nil {
 		log.Fatal("Cannot parse DB Port variable")

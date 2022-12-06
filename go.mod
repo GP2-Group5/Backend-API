@@ -11,7 +11,10 @@ require (
 	gorm.io/gorm v1.24.2
 )
 
-require github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
+)
 
 require (
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
