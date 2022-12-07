@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/GP2-Group5/Backend/feature/mentee"
+	"github.com/GP2-Group5/Backend/middlewares"
 	"github.com/GP2-Group5/Backend/utils/helper"
 	"github.com/labstack/echo/v4"
 )
@@ -18,11 +19,11 @@ func New(service mentee.IMenteeService, e *echo.Echo) {
 		menteeService: service,
 	}
 
-	e.POST("/mentee", handler.Create)
-	e.GET("/mentee", handler.GetAll)
-	e.GET("/mentee/:id", handler.GetByID)
-	e.DELETE("/mentee/:id", handler.Delete)
-	e.PUT("/mentee/:id", handler.Update)
+	e.POST("/mentee", handler.Create, middlewares.JWTMiddleware())
+	e.GET("/mentee", handler.GetAll, middlewares.JWTMiddleware())
+	e.GET("/mentee/:id", handler.GetByID, middlewares.JWTMiddleware())
+	e.DELETE("/mentee/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.PUT("/mentee/:id", handler.Update, middlewares.JWTMiddleware())
 }
 
 func (d *MenteeDelivery) Create(c echo.Context) error {

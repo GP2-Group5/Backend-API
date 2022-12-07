@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/GP2-Group5/Backend/feature/users"
+	"github.com/GP2-Group5/Backend/middlewares"
 	"github.com/GP2-Group5/Backend/utils/helper"
 
 	"net/http"
@@ -20,10 +21,10 @@ func New(service users.ServiceInterface, e *echo.Echo) {
 		userService: service,
 	}
 
-	e.GET("/users", handler.GetAll)
-	e.POST("/users", handler.Create)
-	e.DELETE("/users/:id", handler.Delete)
-	e.PUT("/users/:id", handler.Update)
+	e.GET("/users", handler.GetAll, middlewares.JWTMiddleware())
+	e.POST("/users", handler.Create, middlewares.JWTMiddleware())
+	e.DELETE("/users/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.PUT("/users/:id", handler.Update, middlewares.JWTMiddleware())
 }
 
 func (d *UserDelivery) GetAll(c echo.Context) error {
