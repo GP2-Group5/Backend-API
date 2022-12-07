@@ -23,6 +23,7 @@ func New(service users.ServiceInterface, e *echo.Echo) {
 
 	e.GET("/users", handler.GetAll, middlewares.JWTMiddleware())
 	e.POST("/users", handler.Create, middlewares.JWTMiddleware())
+	e.GET("/users/:id", handler.GetByID, middlewares.JWTMiddleware())
 	e.DELETE("/users/:id", handler.Delete, middlewares.JWTMiddleware())
 	e.PUT("/users/:id", handler.Update, middlewares.JWTMiddleware())
 }
@@ -35,6 +36,17 @@ func (d *UserDelivery) GetAll(c echo.Context) error {
 
 	dataResp := fromCoreList(result)
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get all data", dataResp))
+}
+
+func (d *UserDelivery) GetByID(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	result, err := d.userService.GetByID(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
+	}
+	dataResp := fromCore(result)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get mentee data by id", dataResp))
 }
 
 func (d *UserDelivery) Create(c echo.Context) error {

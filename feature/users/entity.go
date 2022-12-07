@@ -26,6 +26,7 @@ type TeamCore struct {
 
 type RepositoryInterface interface {
 	GetAll() (data []UserCore, err error)
+	GetByID(id int) (data UserCore, err error)
 	Create(input UserCore) (row int, err error)
 	Delete(data UserCore, id int) (row int, err error)
 	Update(data UserCore, id int) (row int, err error)
@@ -33,6 +34,7 @@ type RepositoryInterface interface {
 
 type ServiceInterface interface {
 	GetAll() (data []UserCore, err error)
+	GetByID(id int) (data UserCore, err error)
 	Create(input UserCore) (err error)
 	Delete(data UserCore, id int) (err error)
 	Update(data UserCore, id int) (err error)

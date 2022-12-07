@@ -61,11 +61,11 @@ func (r *menteeRepository) Delete(data mentee.MenteeCore, id int) (row int, err 
 
 	tx := r.db.Delete(&userGorm, id)
 	if tx.Error != nil {
-		return -1, tx.Error
+		return -1, errors.New("data not found")
 	}
 
 	if tx.RowsAffected == 0 {
-		return 0, tx.Error
+		return 0, errors.New("data not found")
 	}
 
 	return int(tx.RowsAffected), nil
@@ -78,12 +78,12 @@ func (r *menteeRepository) Update(data mentee.MenteeCore, id int) (row int, err 
 	tx := r.db.First(&mentee, id)
 
 	if tx.Error != nil {
-		return -1, err
+		return -1, errors.New("data not found")
 	}
 
 	tz := r.db.Model(&mentee).Updates(gormUserCore)
 	if tz.Error != nil {
-		return -1, err
+		return -1, errors.New("data not found")
 	}
 
 	if tz.RowsAffected == 0 {

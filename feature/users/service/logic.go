@@ -28,6 +28,14 @@ func (s *userService) GetAll() (data []users.UserCore, err error) {
 	return data, nil
 }
 
+func (s *userService) GetByID(id int) (data users.UserCore, err error) {
+	dataCore, errData := s.userRepository.GetByID(id)
+	if errData != nil {
+		return users.UserCore{}, errData
+	}
+	return dataCore, nil
+}
+
 func (s *userService) Create(input users.UserCore) (err error) {
 	// if input.Full_Name == "" || input.Email == "" || input.Password == "" || input.Role == "" {
 	// 	return errors.New("semua field harus diisi")
