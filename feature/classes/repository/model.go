@@ -35,3 +35,21 @@ func ClassCoreToModel(class classes.ClassCore) Class {
 
 	return userData
 }
+
+func (dataModel *Class) toCore() classes.ClassCore {
+	return classes.ClassCore{
+		ID:           dataModel.ID,
+		Name:         dataModel.Name,
+		Users:        dataModel.Users.Full_Name,
+		Start_date:   dataModel.Start_date,
+		Graduated_at: dataModel.Graduated_at,
+	}
+}
+
+func toCoreList(dataModel []Class) []classes.ClassCore {
+	var dataCore []classes.ClassCore
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
+}
