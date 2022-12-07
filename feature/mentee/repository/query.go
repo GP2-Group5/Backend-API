@@ -47,10 +47,11 @@ func (r *menteeRepository) GetByID(id int) (data mentee.MenteeCore, err error) {
 
 	tx := r.db.Preload("Status").Preload("Class").First(&mentee, id)
 
-	dataCore := mentee.toCore()
 	if tx.Error != nil {
 		return data, tx.Error
 	}
+
+	dataCore := mentee.toCore()
 
 	return dataCore, nil
 }
@@ -60,11 +61,11 @@ func (r *menteeRepository) Delete(data mentee.MenteeCore, id int) (row int, err 
 
 	tx := r.db.Delete(&userGorm, id)
 	if tx.Error != nil {
-		return -1, err
+		return -1, tx.Error
 	}
 
 	if tx.RowsAffected == 0 {
-		return 0, err
+		return 0, tx.Error
 	}
 
 	return int(tx.RowsAffected), nil

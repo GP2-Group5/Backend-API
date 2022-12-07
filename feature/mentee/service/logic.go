@@ -38,7 +38,7 @@ func (s *menteeService) GetAll() (data []mentee.MenteeCore, err error) {
 func (s *menteeService) GetByID(id int) (data mentee.MenteeCore, err error) {
 	dataCore, errData := s.menteeRepository.GetByID(id)
 	if errData != nil {
-		return data, nil
+		return mentee.MenteeCore{}, errData
 	}
 	return dataCore, nil
 }
@@ -46,7 +46,7 @@ func (s *menteeService) GetByID(id int) (data mentee.MenteeCore, err error) {
 func (s *menteeService) Update(data mentee.MenteeCore, id int) error {
 	_, errUpdate := s.menteeRepository.Update(data, id)
 	if errUpdate != nil {
-		return errors.New("error update")
+		return errUpdate
 	}
 	return nil
 }
@@ -54,7 +54,7 @@ func (s *menteeService) Update(data mentee.MenteeCore, id int) error {
 func (s *menteeService) Delete(dataCore mentee.MenteeCore, id int) error {
 	_, errDelete := s.menteeRepository.Delete(dataCore, id)
 	if errDelete != nil {
-		return errors.New("error delete")
+		return errDelete
 	}
 
 	return nil

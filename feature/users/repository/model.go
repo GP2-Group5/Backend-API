@@ -44,6 +44,7 @@ func (dataModel *Users) toCore() users.UserCore {
 		Status:    dataModel.Status,
 		Role:      dataModel.Role,
 		Team:      dataModel.Team.Name,
+		CreatedAt: dataModel.CreatedAt,
 	}
 }
 

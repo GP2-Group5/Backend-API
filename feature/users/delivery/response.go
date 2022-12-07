@@ -1,16 +1,18 @@
 package delivery
 
 import (
+	"time"
+
 	"github.com/GP2-Group5/Backend/feature/users"
 )
 
 type UserRespon struct {
-	ID        uint   `json:"id"`
-	Full_Name string `json:"full_name"`
-	Email     string `json:"email"`
-	Status    string `json:"status"`
-	Role      string `json:"role"`
-	Team      string `json:"team"`
+	ID        uint      `json:"id"`
+	Full_Name string    `json:"full_name"`
+	Email     string    `json:"email"`
+	Team      string    `json:"team"`
+	Status    string    `json:"status"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func fromCore(dataCore users.UserCore) UserRespon {
@@ -18,9 +20,9 @@ func fromCore(dataCore users.UserCore) UserRespon {
 		ID:        dataCore.ID,
 		Full_Name: dataCore.Full_Name,
 		Email:     dataCore.Email,
-		Status:    dataCore.Status,
-		Role:      dataCore.Role,
 		Team:      dataCore.Team,
+		Status:    dataCore.Status,
+		CreatedAt: dataCore.CreatedAt,
 	}
 }
 

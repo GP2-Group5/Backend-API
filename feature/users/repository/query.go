@@ -21,7 +21,7 @@ func New(db *gorm.DB) users.RepositoryInterface {
 func (r *userRepository) GetAll() (data []users.UserCore, err error) {
 	var users []Users
 
-	tx := r.db.Find(&users)
+	tx := r.db.Preload("Team").Find(&users)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
