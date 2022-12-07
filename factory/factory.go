@@ -9,6 +9,14 @@ import (
 	userRepo "github.com/GP2-Group5/Backend/feature/users/repository"
 	userService "github.com/GP2-Group5/Backend/feature/users/service"
 
+	menteeDelivery "github.com/GP2-Group5/Backend/feature/mentee/delivery"
+	menteeRepo "github.com/GP2-Group5/Backend/feature/mentee/repository"
+	menteeService "github.com/GP2-Group5/Backend/feature/mentee/service"
+
+	classDelivery "github.com/GP2-Group5/Backend/feature/classes/delivery"
+	classRepo "github.com/GP2-Group5/Backend/feature/classes/repository"
+	classService "github.com/GP2-Group5/Backend/feature/classes/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -18,8 +26,16 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	userServiceFactory := userService.New(userRepoFactory)
 	userDelivery.New(userServiceFactory, e)
 
+	menteeRepoFactory := menteeRepo.New(db)
+	menteeServiceFactory := menteeService.New(menteeRepoFactory)
+	menteeDelivery.New(menteeServiceFactory, e)
+
 	authRepoFactory := authRepo.New(db)
 	authServiceFactory := authService.New(authRepoFactory)
 	authDelivery.New(authServiceFactory, e)
+
+	classRepoFactory := classRepo.New(db)
+	classServiceFactory := classService.New(classRepoFactory)
+	classDelivery.New(classServiceFactory, e)
 
 }

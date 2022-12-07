@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/GP2-Group5/Backend/config"
+	classdata "github.com/GP2-Group5/Backend/feature/classes/repository"
+	menteedata "github.com/GP2-Group5/Backend/feature/mentee/repository"
 	userdata "github.com/GP2-Group5/Backend/feature/users/repository"
 
 	"gorm.io/driver/mysql"
@@ -30,4 +32,6 @@ func InitDB(cfg *config.AppConfig) *gorm.DB {
 
 func autoMigrate(db *gorm.DB) {
 	db.AutoMigrate(userdata.Users{})
+	db.AutoMigrate(classdata.Class{})
+	db.AutoMigrate(menteedata.Mentee{})
 }

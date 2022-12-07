@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/GP2-Group5/Backend/feature/classes/repository"
 	"github.com/GP2-Group5/Backend/feature/users"
 	"gorm.io/gorm"
 )
@@ -14,6 +15,7 @@ type Users struct {
 	Role      string
 	TeamID    uint
 	Team      Team
+	Class     []repository.Class
 }
 
 type Team struct {
@@ -32,4 +34,23 @@ func UsersCoreToModel(user users.UserCore) Users {
 	}
 
 	return userData
+}
+
+func (dataModel *Users) toCore() users.UserCore {
+	return users.UserCore{
+		ID:        dataModel.ID,
+		Full_Name: dataModel.Full_Name,
+		Email:     dataModel.Email,
+		Status:    dataModel.Status,
+		Role:      dataModel.Role,
+		Team:      dataModel.Team.Name,
+	}
+}
+
+func toCoreList(dataModel []Users) []users.UserCore {
+	var dataCore []users.UserCore
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
 }

@@ -1,6 +1,8 @@
 package delivery
 
 import (
+	"strconv"
+
 	"github.com/GP2-Group5/Backend/feature/users"
 	"github.com/GP2-Group5/Backend/utils/helper"
 
@@ -18,7 +20,20 @@ func New(service users.ServiceInterface, e *echo.Echo) {
 		userService: service,
 	}
 
+	e.GET("/users", handler.GetAll)
 	e.POST("/users", handler.Create)
+	e.DELETE("/users/:id", handler.Delete)
+	e.PUT("/users/:id", handler.Update)
+}
+
+func (d *UserDelivery) GetAll(c echo.Context) error {
+	result, err := d.userService.GetAll()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
+	}
+
+	dataResp := fromCoreList(result)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get all data", dataResp))
 }
 
 func (d *UserDelivery) Create(c echo.Context) error {
@@ -34,4 +49,28 @@ func (d *UserDelivery) Create(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data"+err.Error()))
 	}
 	return c.JSON(http.StatusCreated, helper.SuccessResponse("success create data"))
+}
+
+func (d *UserDelivery) Delete(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	user := users.UserCore{}
+
+	errResult := d.userService.Delete(user, id)
+	if errResult != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("data not found"))
+	}
+	return c.JSON(http.StatusOK, helper.SuccessResponse("success delete user by id"))
+}
+
+func (d *UserDelivery) Update(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	user := users.UserCore{}
+
+	c.Bind(&user)
+
+	errResult := d.userService.Update(user, id)
+	if errResult != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("data not found"))
+	}
+	return c.JSON(http.StatusOK, helper.SuccessResponse("success update user by id"))
 }
