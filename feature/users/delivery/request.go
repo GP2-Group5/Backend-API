@@ -19,6 +19,7 @@ func toCore(data UserReq) users.UserCore {
 		Email:     data.Email,
 		Password:  data.Password,
 		Role:      data.Role,
+		Status:    data.Status,
 		TeamID:    data.Team_id,
 	}
 }

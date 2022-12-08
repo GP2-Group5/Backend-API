@@ -21,6 +21,14 @@ import (
 	logRepo "github.com/GP2-Group5/Backend/feature/log/repository"
 	logService "github.com/GP2-Group5/Backend/feature/log/service"
 
+	statusDelivery "github.com/GP2-Group5/Backend/feature/status/delivery"
+	statusRepo "github.com/GP2-Group5/Backend/feature/status/repository"
+	statusService "github.com/GP2-Group5/Backend/feature/status/service"
+
+	teamDelivery "github.com/GP2-Group5/Backend/feature/team/delivery"
+	teamRepo "github.com/GP2-Group5/Backend/feature/team/repository"
+	teamService "github.com/GP2-Group5/Backend/feature/team/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -45,4 +53,12 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	logRepoFactory := logRepo.New(db)
 	logServiceFactory := logService.New(logRepoFactory)
 	logDelivery.New(logServiceFactory, e)
+
+	statusRepoFactory := statusRepo.New(db)
+	statusServiceFactory := statusService.New(statusRepoFactory)
+	statusDelivery.New(statusServiceFactory, e)
+
+	teamRepoFactory := teamRepo.New(db)
+	teamServiceFactory := teamService.New(teamRepoFactory)
+	teamDelivery.New(teamServiceFactory, e)
 }
