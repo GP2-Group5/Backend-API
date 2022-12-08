@@ -6,6 +6,7 @@ import (
 
 	"github.com/GP2-Group5/Backend/config"
 	classdata "github.com/GP2-Group5/Backend/feature/classes/repository"
+	logdata "github.com/GP2-Group5/Backend/feature/log/repository"
 	menteedata "github.com/GP2-Group5/Backend/feature/mentee/repository"
 	userdata "github.com/GP2-Group5/Backend/feature/users/repository"
 
@@ -34,4 +35,5 @@ func autoMigrate(db *gorm.DB) {
 	db.AutoMigrate(userdata.Users{})
 	db.AutoMigrate(classdata.Class{})
 	db.AutoMigrate(menteedata.Mentee{})
+	db.AutoMigrate(logdata.Logs{})
 }

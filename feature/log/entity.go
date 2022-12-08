@@ -4,18 +4,12 @@ import "time"
 
 type LogCore struct {
 	ID        int
-	Feedback  string
-	Status_id int
-	Mentee_id Mentee
-	User_id   User
-	Proof     []Proof
+	Feedback  string `validate:"required"`
+	StatusID  uint   `validate:"required"`
+	MenteeID  uint   `validate:"required"`
+	UsersID   uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
-}
-
-type Proof struct {
-	LogID uint
-	Link  string
 }
 
 type Status struct {
@@ -26,9 +20,22 @@ type Status struct {
 type Mentee struct {
 	ID   int
 	Name string
+	Log  []LogCore
 }
 
-type User struct {
+type Users struct {
 	ID   int
 	Name string
+}
+
+type ILogRepository interface {
+	Create(data LogCore) (row int, err error)
+	Update(data LogCore, id int) (row int, err error)
+	Delete(data LogCore, id int) (row int, err error)
+}
+
+type ILogService interface {
+	Create(data LogCore) (err error)
+	Update(data LogCore, id int) (err error)
+	Delete(data LogCore, id int) (err error)
 }

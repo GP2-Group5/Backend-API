@@ -17,6 +17,10 @@ import (
 	classRepo "github.com/GP2-Group5/Backend/feature/classes/repository"
 	classService "github.com/GP2-Group5/Backend/feature/classes/service"
 
+	logDelivery "github.com/GP2-Group5/Backend/feature/log/delivery"
+	logRepo "github.com/GP2-Group5/Backend/feature/log/repository"
+	logService "github.com/GP2-Group5/Backend/feature/log/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -38,4 +42,7 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	classServiceFactory := classService.New(classRepoFactory)
 	classDelivery.New(classServiceFactory, e)
 
+	logRepoFactory := logRepo.New(db)
+	logServiceFactory := logService.New(logRepoFactory)
+	logDelivery.New(logServiceFactory, e)
 }

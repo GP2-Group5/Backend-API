@@ -1,34 +1,35 @@
 package repository
 
 import (
+	"github.com/GP2-Group5/Backend/feature/log"
 	"gorm.io/gorm"
 )
 
-type Log struct {
+type Logs struct {
 	gorm.Model
-	Feedback  string
-	Status_id Status
-	Mentee_id Users
-	User_id   int
-	Proof     Proof
-}
-
-type Proof struct {
-	LogID uint
-	Link  string
+	Feedback string
+	StatusID uint
+	Status   Status
+	MenteeID uint
+	Mentee   Mentee
 }
 
 type Status struct {
-	ID   int
+	gorm.Model
 	Name string
 }
 
 type Mentee struct {
-	ID   int
+	gorm.Model
 	Name string
 }
 
-type Users struct {
-	ID   int
-	Name string
+func LogCoreToModel(data log.LogCore) Logs {
+	menteeData := Logs{
+		Feedback: data.Feedback,
+		StatusID: data.StatusID,
+		MenteeID: data.MenteeID,
+	}
+
+	return menteeData
 }
