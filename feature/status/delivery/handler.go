@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/GP2-Group5/Backend/feature/status"
+	"github.com/GP2-Group5/Backend/middlewares"
 	"github.com/GP2-Group5/Backend/utils/helper"
 	"github.com/labstack/echo/v4"
 )
@@ -16,7 +17,7 @@ func New(service status.IStatusService, e *echo.Echo) {
 	handler := &StatusDelivery{
 		statusService: service,
 	}
-	e.GET("/menteestatus", handler.GetAll)
+	e.GET("/menteestatus", handler.GetAll, middlewares.JWTMiddleware())
 }
 
 func (d *StatusDelivery) GetAll(c echo.Context) error {

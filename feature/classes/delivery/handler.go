@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/GP2-Group5/Backend/feature/classes"
+	"github.com/GP2-Group5/Backend/middlewares"
 	"github.com/GP2-Group5/Backend/utils/helper"
 	"github.com/labstack/echo/v4"
 )
@@ -17,11 +18,11 @@ func New(service classes.IClassService, e *echo.Echo) {
 	handler := &ClassDelivery{
 		classService: service,
 	}
-	e.POST("/class", handler.Create)
-	e.GET("/class", handler.GetAll)
-	e.GET("/class/:id", handler.GetByID)
-	e.DELETE("/class/:id", handler.Delete)
-	e.PUT("/class/:id", handler.Update)
+	e.POST("/class", handler.Create, middlewares.JWTMiddleware())
+	e.GET("/class", handler.GetAll, middlewares.JWTMiddleware())
+	e.GET("/class/:id", handler.GetByID, middlewares.JWTMiddleware())
+	e.DELETE("/class/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.PUT("/class/:id", handler.Update, middlewares.JWTMiddleware())
 }
 
 func (d *ClassDelivery) GetAll(c echo.Context) error {

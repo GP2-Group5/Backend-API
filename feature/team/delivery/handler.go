@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/GP2-Group5/Backend/feature/team"
+	"github.com/GP2-Group5/Backend/middlewares"
 	"github.com/GP2-Group5/Backend/utils/helper"
 	"github.com/labstack/echo/v4"
 )
@@ -16,7 +17,7 @@ func New(service team.ITeamService, e *echo.Echo) {
 	handler := &TeamDelivery{
 		teamService: service,
 	}
-	e.GET("/team", handler.GetAll)
+	e.GET("/team", handler.GetAll, middlewares.JWTMiddleware())
 }
 
 func (d *TeamDelivery) GetAll(c echo.Context) error {

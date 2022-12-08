@@ -12,6 +12,8 @@ type Logs struct {
 	Status   Status
 	MenteeID uint
 	Mentee   Mentee
+	UsersID  uint
+	Users    Users
 }
 
 type Status struct {
@@ -25,11 +27,17 @@ type Mentee struct {
 	Logs []Logs
 }
 
+type Users struct {
+	gorm.Model
+	Nama string
+}
+
 func LogCoreToModel(data log.LogCore) Logs {
 	menteeData := Logs{
 		Feedback: data.Feedback,
 		StatusID: data.StatusID,
 		MenteeID: data.MenteeID,
+		UsersID:  data.UsersID,
 	}
 
 	return menteeData

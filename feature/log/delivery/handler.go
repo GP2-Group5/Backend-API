@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/GP2-Group5/Backend/feature/log"
+	"github.com/GP2-Group5/Backend/middlewares"
 	"github.com/GP2-Group5/Backend/utils/helper"
 	"github.com/labstack/echo/v4"
 )
@@ -17,10 +18,10 @@ func New(service log.ILogService, e *echo.Echo) {
 	handler := &LogDelivery{
 		logService: service,
 	}
-	e.POST("/log", handler.Create)
-	e.PUT("/log/:id", handler.Update)
-	e.DELETE("/log/:id", handler.Delete)
-	e.GET("/mentee/:id/log", handler.GetByID)
+	e.POST("/log", handler.Create, middlewares.JWTMiddleware())
+	e.PUT("/log/:id", handler.Update, middlewares.JWTMiddleware())
+	e.DELETE("/log/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.GET("/mentee/:id/log", handler.GetByID, middlewares.JWTMiddleware())
 }
 
 func (d *LogDelivery) Create(c echo.Context) error {
@@ -30,6 +31,8 @@ func (d *LogDelivery) Create(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Error binding data"+errBind.Error()))
 	}
+
+	logInput.UsersID = middlewares.ExtractTokenUserId(c)
 
 	dataCore := toCore(logInput)
 	err := d.logService.Create(dataCore)
