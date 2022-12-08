@@ -24,8 +24,8 @@ func toCore(data MenteeReq) mentee.MenteeCore {
 		Phone:     data.Phone,
 		Type:      data.Type,
 		Major:     data.Major,
-		Graduate:  uint(data.Graduate),
-		Status_id: uint(data.Status_id),
-		Class_id:  uint(data.Class_id),
+		Graduate:  data.Graduate,
+		Status_id: data.Status_id,
+		Class_id:  data.Class_id,
 	}
 }

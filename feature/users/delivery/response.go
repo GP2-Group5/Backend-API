@@ -12,6 +12,7 @@ type UserRespon struct {
 	Email     string    `json:"email"`
 	Team      string    `json:"team"`
 	Status    string    `json:"status"`
+	Role      string    `json:"role"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -22,6 +23,7 @@ func fromCore(dataCore users.UserCore) UserRespon {
 		Email:     dataCore.Email,
 		Team:      dataCore.Team,
 		Status:    dataCore.Status,
+		Role:      dataCore.Role,
 		CreatedAt: dataCore.CreatedAt,
 	}
 }

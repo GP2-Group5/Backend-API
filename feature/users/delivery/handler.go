@@ -77,11 +77,15 @@ func (d *UserDelivery) Delete(c echo.Context) error {
 
 func (d *UserDelivery) Update(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	user := users.UserCore{}
+	user := UserReq{}
 
-	c.Bind(&user)
+	errBind := c.Bind(&user)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Error binding data"+errBind.Error()))
+	}
 
-	errResult := d.userService.Update(user, id)
+	dataCore := toCore(user)
+	errResult := d.userService.Update(dataCore, id)
 	if errResult != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("data not found"))
 	}

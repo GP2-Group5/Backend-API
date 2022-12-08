@@ -40,11 +40,17 @@ func (d *LogDelivery) Create(c echo.Context) error {
 
 func (d *LogDelivery) Update(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	log := log.LogCore{}
+	log := LogReq{}
 
-	c.Bind(&log)
+	errBind := c.Bind(&log)
 
-	resultErr := d.logService.Update(log, id)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Error binding data"+errBind.Error()))
+	}
+
+	dataCore := toCore(log)
+
+	resultErr := d.logService.Update(dataCore, id)
 
 	if resultErr != nil {
 		return c.JSON(http.StatusNotFound, helper.FailedResponse("data not found"))

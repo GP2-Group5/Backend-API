@@ -78,11 +78,17 @@ func (d *MenteeDelivery) Delete(c echo.Context) error {
 
 func (d *MenteeDelivery) Update(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	mentee := mentee.MenteeCore{}
+	mentee := MenteeReq{}
 
-	c.Bind(&mentee)
+	errBind := c.Bind(&mentee)
 
-	resultErr := d.menteeService.Update(mentee, id)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Error binding data"+errBind.Error()))
+	}
+
+	dataCore := toCore(mentee)
+
+	resultErr := d.menteeService.Update(dataCore, id)
 
 	if resultErr != nil {
 		return c.JSON(http.StatusNotFound, helper.FailedResponse("data not found"))
