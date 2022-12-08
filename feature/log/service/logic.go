@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/GP2-Group5/Backend/feature/log"
 	"github.com/go-playground/validator"
@@ -35,7 +34,6 @@ func (s *logService) Create(input log.LogCore) (err error) {
 func (s *logService) Update(data log.LogCore, id int) error {
 	_, errUpdate := s.logRepository.Update(data, id)
 
-	fmt.Println(data)
 	if errUpdate != nil {
 		return errUpdate
 	}
@@ -49,4 +47,12 @@ func (s *logService) Delete(dataCore log.LogCore, id int) error {
 	}
 
 	return nil
+}
+
+func (s *logService) GetByID(id int) (data log.Mentee, err error) {
+	dataCore, errData := s.logRepository.GetByID(id)
+	if errData != nil {
+		return log.Mentee{}, errData
+	}
+	return dataCore, nil
 }

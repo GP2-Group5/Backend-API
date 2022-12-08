@@ -1,9 +1,6 @@
 package middlewares
 
 import (
-	"encoding/json"
-	"errors"
-	"net/http"
 	"time"
 
 	"github.com/GP2-Group5/Backend/config"
@@ -49,49 +46,4 @@ func ExtractTokenUserRole(e echo.Context) string {
 		return role
 	}
 	return ""
-}
-
-func IsAuthorized(handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-
-		if r.Header["Token"] == nil {
-			err0 := errors.New("no token found")
-			json.NewEncoder(w).Encode(err0)
-			return
-		}
-
-		var mySigningKey = []byte(config.SECRET_JWT)
-
-		token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, errors.New("parsing error")
-			}
-			return mySigningKey, nil
-		})
-
-		if err != nil {
-
-			err := errors.New("your token has expired")
-			json.NewEncoder(w).Encode(err)
-			return
-		}
-
-		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			if claims["role"] == "admin" {
-
-				r.Header.Set("Role", "admin")
-				handler.ServeHTTP(w, r)
-				return
-
-			} else if claims["role"] == "user" {
-
-				r.Header.Set("Role", "user")
-				handler.ServeHTTP(w, r)
-				return
-			}
-		}
-
-		err2 := errors.New("not authorized")
-		json.NewEncoder(w).Encode(err2)
-	}
 }

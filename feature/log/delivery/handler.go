@@ -20,6 +20,7 @@ func New(service log.ILogService, e *echo.Echo) {
 	e.POST("/log", handler.Create)
 	e.PUT("/log/:id", handler.Update)
 	e.DELETE("/log/:id", handler.Delete)
+	e.GET("/mentee/:id/log", handler.GetByID)
 }
 
 func (d *LogDelivery) Create(c echo.Context) error {
@@ -67,4 +68,16 @@ func (d *LogDelivery) Delete(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, helper.FailedResponse("data not found"))
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success delete log by id"))
+}
+
+func (d *LogDelivery) GetByID(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	result, err := d.logService.GetByID(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
+	}
+
+	dataResp := fromCore(result)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get mentee data by id", dataResp))
 }

@@ -65,3 +65,17 @@ func (r *logRepository) Delete(data log.LogCore, id int) (row int, err error) {
 
 	return int(tx.RowsAffected), nil
 }
+
+func (r *logRepository) GetByID(id int) (data log.Mentee, err error) {
+	var mentee Mentee
+
+	tx := r.db.Model(&Mentee{}).Preload("Logs.Status").Find(&mentee)
+
+	if tx.Error != nil {
+		return data, tx.Error
+	}
+
+	dataCore := mentee.toCore()
+
+	return dataCore, nil
+}

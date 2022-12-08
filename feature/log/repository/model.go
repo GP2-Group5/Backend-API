@@ -22,6 +22,7 @@ type Status struct {
 type Mentee struct {
 	gorm.Model
 	Name string
+	Logs []Logs
 }
 
 func LogCoreToModel(data log.LogCore) Logs {
@@ -32,4 +33,28 @@ func LogCoreToModel(data log.LogCore) Logs {
 	}
 
 	return menteeData
+}
+
+func (dataModel *Mentee) toCore() log.Mentee {
+	return log.Mentee{
+		ID:   dataModel.ID,
+		Name: dataModel.Name,
+		Log:  toCoreList(dataModel.Logs),
+	}
+}
+
+func (dataModel *Logs) toCoreLog() log.LogCore {
+	return log.LogCore{
+		ID:       dataModel.ID,
+		Feedback: dataModel.Feedback,
+		Status:   dataModel.Status.Name,
+	}
+}
+
+func toCoreList(dataModel []Logs) []log.LogCore {
+	var dataCore []log.LogCore
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreLog())
+	}
+	return dataCore
 }
