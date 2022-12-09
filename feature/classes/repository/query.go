@@ -22,7 +22,7 @@ func (r *classRepository) GetAll() (data []classes.ClassCore, err error) {
 
 	tx := r.db.Preload("Users").Find(&class)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return nil, errors.New("data not found")
 	}
 	dataCore := toCoreList(class)
 	return dataCore, nil
@@ -32,7 +32,7 @@ func (r *classRepository) Create(input classes.ClassCore) (row int, err error) {
 	classGorm := ClassCoreToModel(input)
 	tx := r.db.Create(&classGorm)
 	if tx.Error != nil {
-		return -1, tx.Error
+		return -1, errors.New("insert failed")
 	}
 
 	if tx.RowsAffected == 0 {
@@ -47,7 +47,7 @@ func (r *classRepository) GetByID(id int) (data classes.ClassCore, err error) {
 	tx := r.db.Preload("Users").First(&class, id)
 
 	if tx.Error != nil {
-		return data, tx.Error
+		return data, errors.New("data not found")
 	}
 
 	userCore := class.toCore()

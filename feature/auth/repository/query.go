@@ -20,7 +20,7 @@ func (repo *authData) FindUser(email, password string) (loginData auth.Core, err
 
 	userModel := Users{}
 
-	tx := repo.db.Where("email= ? ", email).First(&userModel)
+	tx := repo.db.Where("email= ? and deleted_at is null", email).First(&userModel)
 
 	err = tx.Error
 

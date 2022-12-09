@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/GP2-Group5/Backend/feature/classes/repository"
 	"github.com/GP2-Group5/Backend/feature/mentee"
 	"gorm.io/gorm"
 )
@@ -19,6 +20,7 @@ type Mentee struct {
 	Status    Status
 	Class_id  uint
 	Class     Class
+	Log       []Log
 }
 
 type Status struct {
@@ -32,6 +34,17 @@ type Class struct {
 	User_id      int
 	Start_date   string
 	Graduated_at string
+}
+
+type Log struct {
+	gorm.Model
+	Feedback  string
+	Status_id uint
+	Status    Status
+	Mentee_id uint
+	Mentee    Mentee
+	UsersID   uint
+	Users     repository.Users
 }
 
 func MenteeCoreToModel(mentee mentee.MenteeCore) Mentee {
@@ -66,11 +79,31 @@ func (dataModel *Mentee) toCore() mentee.MenteeCore {
 		Class_id:   dataModel.Class_id,
 		StatusName: dataModel.Status.Name,
 		ClassName:  dataModel.Class.Name,
+		Log:        toCoreListLog(dataModel.Log),
 	}
 }
 
 func toCoreList(dataModel []Mentee) []mentee.MenteeCore {
 	var dataCore []mentee.MenteeCore
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
+}
+
+func (dataModel *Log) toCore() mentee.LogCore {
+	return mentee.LogCore{
+		ID:       dataModel.ID,
+		Feedback: dataModel.Feedback,
+		StatusID: dataModel.Status_id,
+		Status:   dataModel.Status.Name,
+		MenteeID: dataModel.Mentee_id,
+		Mentee:   dataModel.Mentee.Name,
+	}
+}
+
+func toCoreListLog(dataModel []Log) []mentee.LogCore {
+	var dataCore []mentee.LogCore
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCore())
 	}

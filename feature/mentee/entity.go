@@ -19,6 +19,7 @@ type MenteeCore struct {
 	Deleted_at time.Time
 	Created_at time.Time
 	Updated_at time.Time
+	Log        []LogCore
 }
 
 type Status struct {
@@ -31,6 +32,15 @@ type Status struct {
 type Class struct {
 	ClassID   int
 	ClassName string
+}
+
+type LogCore struct {
+	ID       uint
+	Feedback string
+	StatusID uint
+	Status   string
+	MenteeID uint
+	Mentee   string
 }
 
 type IMenteeRepository interface {

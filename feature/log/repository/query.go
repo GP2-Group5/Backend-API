@@ -21,7 +21,7 @@ func (r *logRepository) Create(input log.LogCore) (row int, err error) {
 	userGorm := LogCoreToModel(input)
 	tx := r.db.Create(&userGorm)
 	if tx.Error != nil {
-		return -1, tx.Error
+		return -1, errors.New("insert failed")
 	}
 	if tx.RowsAffected == 0 {
 		return 0, errors.New("insert failed")

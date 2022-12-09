@@ -21,7 +21,7 @@ func New(service log.ILogService, e *echo.Echo) {
 	e.POST("/log", handler.Create, middlewares.JWTMiddleware())
 	e.PUT("/log/:id", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/log/:id", handler.Delete, middlewares.JWTMiddleware())
-	e.GET("/mentee/:id/log", handler.GetByID, middlewares.JWTMiddleware())
+	// e.GET("/mentee/:id/log", handler.GetByID, middlewares.JWTMiddleware())
 }
 
 func (d *LogDelivery) Create(c echo.Context) error {

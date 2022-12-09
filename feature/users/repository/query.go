@@ -23,7 +23,7 @@ func (r *userRepository) GetAll() (data []users.UserCore, err error) {
 
 	tx := r.db.Preload("Team").Find(&users)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return nil, errors.New("data not found")
 	}
 	dataCore := toCoreList(users)
 	return dataCore, nil
@@ -33,7 +33,7 @@ func (r *userRepository) Create(input users.UserCore) (row int, err error) {
 	userGorm := UsersCoreToModel(input)
 	tx := r.db.Create(&userGorm)
 	if tx.Error != nil {
-		return -1, tx.Error
+		return -1, errors.New("insert failed")
 	}
 	if tx.RowsAffected == 0 {
 		return 0, errors.New("insert failed")
@@ -47,7 +47,7 @@ func (r *userRepository) GetByID(id int) (data users.UserCore, err error) {
 	tx := r.db.Preload("Team").First(&user, id)
 
 	if tx.Error != nil {
-		return data, tx.Error
+		return data, errors.New("data not found")
 	}
 
 	userCore := user.toCore()

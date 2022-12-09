@@ -24,6 +24,7 @@ func New(service mentee.IMenteeService, e *echo.Echo) {
 	e.GET("/mentee/:id", handler.GetByID, middlewares.JWTMiddleware())
 	e.DELETE("/mentee/:id", handler.Delete, middlewares.JWTMiddleware())
 	e.PUT("/mentee/:id", handler.Update, middlewares.JWTMiddleware())
+	e.GET("/mentee/:id/log", handler.GetByIDLog, middlewares.JWTMiddleware())
 }
 
 func (d *MenteeDelivery) Create(c echo.Context) error {
@@ -61,6 +62,18 @@ func (d *MenteeDelivery) GetByID(c echo.Context) error {
 	}
 
 	dataResp := fromCore(result)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get mentee data by id", dataResp))
+}
+
+func (d *MenteeDelivery) GetByIDLog(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	result, err := d.menteeService.GetByID(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
+	}
+
+	dataResp := fromCoreLg(result)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get mentee data by id", dataResp))
 }

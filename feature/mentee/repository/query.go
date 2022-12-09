@@ -21,7 +21,7 @@ func (r *menteeRepository) Create(input mentee.MenteeCore) (row int, err error) 
 	userGorm := MenteeCoreToModel(input)
 	tx := r.db.Create(&userGorm)
 	if tx.Error != nil {
-		return -1, tx.Error
+		return -1, errors.New("insert failed")
 	}
 	if tx.RowsAffected == 0 {
 		return 0, errors.New("insert failed")
@@ -33,9 +33,9 @@ func (r *menteeRepository) Create(input mentee.MenteeCore) (row int, err error) 
 func (r *menteeRepository) GetAll() (data []mentee.MenteeCore, err error) {
 	var mentees []Mentee
 
-	tx := r.db.Preload("Status").Preload("Class").Find(&mentees)
+	tx := r.db.Preload("Log.Status").Preload("Status").Preload("Class").Find(&mentees)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return nil, errors.New("data not found")
 	}
 
 	dataCore := toCoreList(mentees)
@@ -45,10 +45,10 @@ func (r *menteeRepository) GetAll() (data []mentee.MenteeCore, err error) {
 func (r *menteeRepository) GetByID(id int) (data mentee.MenteeCore, err error) {
 	var mentee Mentee
 
-	tx := r.db.Preload("Status").Preload("Class").First(&mentee, id)
+	tx := r.db.Preload("Log").Preload("Status").Preload("Class").First(&mentee, id)
 
 	if tx.Error != nil {
-		return data, tx.Error
+		return data, errors.New("data not found")
 	}
 
 	dataCore := mentee.toCore()
